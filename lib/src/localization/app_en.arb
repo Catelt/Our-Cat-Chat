@@ -1,0 +1,12 @@
+{
+  "common_appTitle": "My Chat GPT",
+  "common_appVersion": "Version {value}",
+  "@common_appVersion": {
+    "description": "Version number of app",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  }
+}
