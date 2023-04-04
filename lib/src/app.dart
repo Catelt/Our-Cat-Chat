@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
         Locale('en', ''),
       ],
       onGenerateTitle: (BuildContext context) => S.of(context).common_appTitle,
-      theme: ThemeData(useMaterial3: true, primarySwatch: Colors.purple),
-      home: const HomeView(),
+      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.purple),
+      home: HomeView(),
     );
   }
 }

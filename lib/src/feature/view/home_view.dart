@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:my_chat_gpt/src/constants/app_sizes.dart';
+import 'package:my_chat_gpt/src/feature/view/widgets/custom_edit_text.dart';
+import 'package:my_chat_gpt/src/feature/view/widgets/msg_item.dart';
+import 'package:my_chat_gpt/src/network/model/message.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+  HomeView({super.key});
+  final FlutterTts tts = FlutterTts();
+
+  void _speak(String text) async {
+    await tts.setLanguage('en-US');
+    await tts.setPitch(1);
+    await tts.speak(text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,43 +47,24 @@ class HomeView extends StatelessWidget {
             Container(
               height: double.infinity,
               child: SingleChildScrollView(
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 30,
-                    itemBuilder: (context, index) => Text(
-                          "Hello",
-                          style: TextStyle(fontSize: 20),
-                        )),
-              ),
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 30,
+                      itemBuilder: (context, index) => MsgItem(
+                          item: XMessage.newMsg("Hello Chat Gpt"),
+                          onSpeak: (text) {
+                            _speak(text);
+                          }))),
             ),
             Positioned(
                 bottom: 20,
-                left: 0,
-                right: 0,
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: Sizes.p20),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Material(
-                        borderRadius: BorderRadius.circular(Sizes.p12),
-                        elevation: 8,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Say something',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(Sizes.p12),
-                              borderSide: BorderSide.none,
-                            ),
-                            fillColor: Colors.white,
-                            filled: true,
-                            contentPadding: const EdgeInsets.all(Sizes.p12),
-                          ),
-                        ),
-                      ))
-                    ],
-                  ),
+                left: Sizes.p16,
+                right: Sizes.p16,
+                child: CustomEditText(
+                  onSendText: (text) {
+                    print(text);
+                  },
                 ))
           ],
         ),
