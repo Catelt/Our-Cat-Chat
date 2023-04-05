@@ -55,53 +55,75 @@ class _CustomEditTextState extends State<CustomEditText> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      borderRadius: BorderRadius.circular(Sizes.p12),
-      elevation: 8,
-      child: Row(
-        children: [
-          Expanded(
-              child: TextField(
-            keyboardType: TextInputType.multiline,
-            maxLines: null,
-            controller: controller,
-            decoration: InputDecoration(
-              hintText: 'Start typing or taking',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Sizes.p12),
-                borderSide: BorderSide.none,
+    return Column(
+      children: [
+        AnimatedOpacity(
+          opacity: _isListening ? 1 : 0,
+          duration: const Duration(seconds: 1),
+          child: Container(
+              padding: const EdgeInsets.symmetric(
+                  vertical: Sizes.p8, horizontal: Sizes.p12),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceVariant,
+                  borderRadius: BorderRadius.circular(Sizes.p12)),
+              child: const Text(
+                'GPT bot is listening...',
+                style: TextStyle(
+                  fontSize: Sizes.p16,
+                ),
+              )),
+        ),
+        Gaps.h8,
+        Material(
+          borderRadius: BorderRadius.circular(Sizes.p12),
+          elevation: 8,
+          child: Row(
+            children: [
+              Expanded(
+                  child: TextField(
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                controller: controller,
+                decoration: InputDecoration(
+                  hintText: 'Start typing or taking',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(Sizes.p12),
+                    borderSide: BorderSide.none,
+                  ),
+                  fillColor: Colors.white,
+                  filled: true,
+                  contentPadding: const EdgeInsets.all(Sizes.p12),
+                ),
+              )),
+              IconButton(
+                onPressed: () {
+                  _speechToText.isListening
+                      ? _stopListening()
+                      : _startListening();
+                },
+                icon: Icon(
+                  Icons.mic,
+                  size: Sizes.p28,
+                  color: _isListening
+                      ? Theme.of(context).colorScheme.primary
+                      : null,
+                ),
               ),
-              fillColor: Colors.white,
-              filled: true,
-              contentPadding: const EdgeInsets.all(Sizes.p12),
-            ),
-          )),
-          IconButton(
-            onPressed: () {
-              _speechToText.isListening ? _stopListening() : _startListening();
-            },
-            icon: Icon(
-              Icons.mic,
-              size: Sizes.p28,
-              color:
-                  _isListening ? Theme.of(context).colorScheme.primary : null,
-            ),
+              IconButton(
+                onPressed: () {
+                  widget.onSendText(controller.text);
+                  controller.text = '';
+                },
+                icon: Icon(
+                  Icons.send_rounded,
+                  size: Sizes.p28,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ],
           ),
-          IconButton(
-            onPressed: () {
-              widget.onSendText(controller.text);
-              controller.text = '';
-            },
-            icon: Icon(
-              Icons.send_rounded,
-              size: Sizes.p28,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
-
-  static SpeechToText() {}
 }
