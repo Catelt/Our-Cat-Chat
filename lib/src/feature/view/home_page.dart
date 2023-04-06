@@ -78,20 +78,36 @@ class HomePage extends StatelessWidget {
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Text("Select Speech Language"),
+                                            Text(
+                                              "Select Speech Language",
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                            Gaps.h12,
                                             ListView.separated(
                                               shrinkWrap: true,
                                               physics:
                                                   NeverScrollableScrollPhysics(),
                                               itemBuilder: (context, index) {
-                                                return Row(children: [
-                                                  Image.asset(
-                                                    XImagePath.botImage,
-                                                    height: 24,
-                                                    width: 24,
-                                                  ),
-                                                  Text("Việt Nam")
-                                                ]);
+                                                return Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: Sizes.p12),
+                                                  child: Row(children: [
+                                                    Image.asset(
+                                                      XImagePath.botImage,
+                                                      height: 24,
+                                                      width: 24,
+                                                    ),
+                                                    Gaps.w8,
+                                                    Text(
+                                                      "Việt Nam",
+                                                      style: TextStyle(
+                                                          fontSize: Sizes.p16),
+                                                    ),
+                                                    Spacer(),
+                                                    Icon(Icons.check)
+                                                  ]),
+                                                );
                                               },
                                               itemCount: 2,
                                               separatorBuilder:
