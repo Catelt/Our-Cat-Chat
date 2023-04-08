@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:my_chat_gpt/main.dart';
 import 'package:my_chat_gpt/src/constants/app_sizes.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class CustomEditText extends StatefulWidget {
   const CustomEditText({super.key, required this.onSendText});
@@ -14,13 +16,6 @@ class CustomEditText extends StatefulWidget {
 class _CustomEditTextState extends State<CustomEditText> {
   final stt.SpeechToText _speechToText = stt.SpeechToText();
   final controller = TextEditingController();
-  bool _isListening = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _initSpeech();
-  }
 
   @override
   void dispose() {
@@ -29,28 +24,41 @@ class _CustomEditTextState extends State<CustomEditText> {
     super.dispose();
   }
 
-  void _initSpeech() async {
-    await _speechToText.initialize();
+  Future<void> _initSpeech() async {
+    if (!_speechToText.isAvailable) {
+      await _speechToText.initialize(onError: (error) => logger.e(error));
+    }
   }
 
-  void _stopListening() async {
-    await _speechToText.stop();
-    setState(() {
-      _isListening = false;
-    });
+  Future<void> _stopListening() async {
+    if (_speechToText.isAvailable) {
+      await _speechToText.stop();
+      setState(() {});
+    }
   }
 
   void _startListening() async {
-    await _speechToText.listen(onResult: _onSpeechResult);
-    setState(() {
-      _isListening = true;
-    });
+    await _initSpeech();
+    if (_speechToText.isAvailable) {
+      await _speechToText.listen(onResult: _onSpeechResult);
+      setState(() {});
+    }
   }
 
   void _onSpeechResult(SpeechRecognitionResult result) {
     setState(() {
-      controller.text = '${controller.text} ${result.recognizedWords}';
+      if (_speechToText.isListening) {
+        controller.text = result.recognizedWords;
+        controller.selection =
+            TextSelection.collapsed(offset: controller.text.length);
+      }
     });
+  }
+
+  void _handleSendText() async {
+    await _stopListening();
+    widget.onSendText(controller.text);
+    controller.text = '';
   }
 
   @override
@@ -58,7 +66,7 @@ class _CustomEditTextState extends State<CustomEditText> {
     return Column(
       children: [
         AnimatedOpacity(
-          opacity: _isListening ? 1 : 0,
+          opacity: _speechToText.isListening ? 1 : 0,
           duration: const Duration(seconds: 1),
           child: Container(
               padding: const EdgeInsets.symmetric(
@@ -104,16 +112,13 @@ class _CustomEditTextState extends State<CustomEditText> {
                 icon: Icon(
                   Icons.mic,
                   size: Sizes.p28,
-                  color: _isListening
+                  color: _speechToText.isListening
                       ? Theme.of(context).colorScheme.primary
                       : null,
                 ),
               ),
               IconButton(
-                onPressed: () {
-                  widget.onSendText(controller.text);
-                  controller.text = '';
-                },
+                onPressed: _handleSendText,
                 icon: Icon(
                   Icons.send_rounded,
                   size: Sizes.p28,

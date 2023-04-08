@@ -142,37 +142,43 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 )),
-            body: SafeArea(
-              child: Stack(
-                children: [
-                  SizedBox(
-                    height: double.infinity,
-                    child: SingleChildScrollView(
-                        child: ListView.builder(
-                            padding: const EdgeInsets.only(bottom: 70),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 30,
-                            itemBuilder: (context, index) => MsgItem(
-                                item: XMessage.newMsg(
-                                    "Hello Chat Gpt, Are You Oke asdasd",
-                                    indexChat: index == 1 ? 1 : 0),
-                                enableAutoTTS: state.enableAutoTTS,
-                                onSpeak: (text) {
-                                  _speak(text);
-                                }))),
+            body: BlocBuilder<HomeCubit, HomeState>(
+              buildWhen: (previous, current) =>
+                  previous.messages != current.messages,
+              builder: (context, state) {
+                return SafeArea(
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        height: double.infinity,
+                        child: SingleChildScrollView(
+                            child: ListView.builder(
+                                padding: const EdgeInsets.only(bottom: 70),
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: state.messages.length,
+                                itemBuilder: (context, index) => MsgItem(
+                                    item: state.messages[index],
+                                    enableAutoTTS: state.enableAutoTTS,
+                                    onSpeak: (text) {
+                                      _speak(text);
+                                    }))),
+                      ),
+                      Positioned(
+                          bottom: 20,
+                          left: Sizes.p16,
+                          right: Sizes.p16,
+                          child: CustomEditText(
+                            onSendText: (text) {
+                              context
+                                  .read<HomeCubit>()
+                                  .addMessage(XMessage.newMsg(text));
+                            },
+                          ))
+                    ],
                   ),
-                  Positioned(
-                      bottom: 20,
-                      left: Sizes.p16,
-                      right: Sizes.p16,
-                      child: CustomEditText(
-                        onSendText: (text) {
-                          print(text);
-                        },
-                      ))
-                ],
-              ),
+                );
+              },
             ),
           );
         },
