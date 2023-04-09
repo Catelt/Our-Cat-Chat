@@ -106,6 +106,7 @@ class HomePage extends StatelessWidget {
                 )),
             body: BlocConsumer<HomeCubit, HomeState>(
               listenWhen: (previous, current) =>
+                  previous.enableAutoTTS != current.enableAutoTTS ||
                   previous.isSpeaking != current.isSpeaking,
               listener: (context, state) async {
                 if (state.isSpeaking < 0) {
