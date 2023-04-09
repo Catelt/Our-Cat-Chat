@@ -40,7 +40,8 @@ class _CustomEditTextState extends State<CustomEditText> {
   void _startListening() async {
     await _initSpeech();
     if (_speechToText.isAvailable) {
-      await _speechToText.listen(onResult: _onSpeechResult);
+      await _speechToText.listen(
+          pauseFor: const Duration(seconds: 5), onResult: _onSpeechResult);
       setState(() {});
     }
   }
