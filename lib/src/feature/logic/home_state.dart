@@ -12,7 +12,9 @@ class HomeState extends Equatable {
 
   factory HomeState.ds() {
     return HomeState(
-        enableAutoTTS: true, messages: [], language: UserPrefs.I.getLanguage());
+        enableAutoTTS: true,
+        messages: const [],
+        language: UserPrefs.I.getLanguage());
   }
 
   HomeState copyWith({

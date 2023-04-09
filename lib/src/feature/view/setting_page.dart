@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_chat_gpt/src/constants/app_sizes.dart';
-import 'package:my_chat_gpt/src/feature/logic/cubit/home_cubit.dart';
+import 'package:my_chat_gpt/src/feature/logic/home_cubit.dart';
 import 'package:my_chat_gpt/src/localization/localization_utils.dart';
 import 'package:my_chat_gpt/src/widgets/bottom_select_language.dart';
 

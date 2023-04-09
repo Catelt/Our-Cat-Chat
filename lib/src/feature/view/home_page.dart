@@ -1,10 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_chat_gpt/src/constants/app_sizes.dart';
 import 'package:my_chat_gpt/src/constants/images.dart';
-import 'package:my_chat_gpt/src/feature/logic/cubit/home_cubit.dart';
+import 'package:my_chat_gpt/src/feature/logic/home_cubit.dart';
 import 'package:my_chat_gpt/src/feature/view/setting_page.dart';
 import 'package:my_chat_gpt/src/feature/view/widgets/custom_edit_text.dart';
 import 'package:my_chat_gpt/src/feature/view/widgets/msg_item.dart';
@@ -67,7 +65,7 @@ class HomePage extends StatelessWidget {
                               onPressed: () {
                                 Navigator.push(
                                   context,
-                                  SlideRightRoute(page: SettingPage()),
+                                  SlideRightRoute(page: const SettingPage()),
                                 );
                               },
                               icon: const Icon(Icons.settings))

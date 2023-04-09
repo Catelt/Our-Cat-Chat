@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_chat_gpt/src/constants/app_language.dart';
 import 'package:my_chat_gpt/src/constants/app_sizes.dart';
-import 'package:my_chat_gpt/src/feature/logic/cubit/home_cubit.dart';
+import 'package:my_chat_gpt/src/feature/logic/home_cubit.dart';
 import 'package:my_chat_gpt/src/localization/localization_utils.dart';
 import 'package:my_chat_gpt/src/network/model/language.dart';
 
@@ -68,7 +68,7 @@ class BottomSelectLanguage extends StatelessWidget {
           Gaps.w8,
           Text(
             item.name,
-            style: TextStyle(fontSize: Sizes.p16),
+            style: const TextStyle(fontSize: Sizes.p16),
           ),
           const Spacer(),
           if (isSelect) const Icon(Icons.check)
