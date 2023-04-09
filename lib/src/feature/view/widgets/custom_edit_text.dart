@@ -65,21 +65,24 @@ class _CustomEditTextState extends State<CustomEditText> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AnimatedOpacity(
-          opacity: _speechToText.isListening ? 1 : 0,
-          duration: const Duration(seconds: 1),
-          child: Container(
-              padding: const EdgeInsets.symmetric(
-                  vertical: Sizes.p8, horizontal: Sizes.p12),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceVariant,
-                  borderRadius: BorderRadius.circular(Sizes.p12)),
-              child: Text(
-                S.of(context).is_listening_gpt,
-                style: const TextStyle(
-                  fontSize: Sizes.p16,
-                ),
-              )),
+        Visibility(
+          visible: _speechToText.isListening,
+          child: AnimatedOpacity(
+            opacity: _speechToText.isListening ? 1 : 0,
+            duration: const Duration(seconds: 1),
+            child: Container(
+                padding: const EdgeInsets.symmetric(
+                    vertical: Sizes.p8, horizontal: Sizes.p12),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceVariant,
+                    borderRadius: BorderRadius.circular(Sizes.p12)),
+                child: Text(
+                  S.of(context).is_listening_gpt,
+                  style: const TextStyle(
+                    fontSize: Sizes.p16,
+                  ),
+                )),
+          ),
         ),
         Gaps.h8,
         Material(

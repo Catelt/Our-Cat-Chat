@@ -5,12 +5,14 @@ class HomeState extends Equatable {
   final XLanguage language;
   final List<XMessage> messages;
   final bool isLoading;
+  final int isSpeaking;
 
   const HomeState(
       {this.enableAutoTTS = true,
       this.messages = const [],
       required this.language,
-      this.isLoading = false});
+      this.isLoading = false,
+      this.isSpeaking = -1});
 
   factory HomeState.ds() {
     return HomeState(
@@ -24,22 +26,25 @@ class HomeState extends Equatable {
     XLanguage? language,
     List<XMessage>? messages,
     bool? isLoading,
+    int? isSpeaking,
   }) {
     return HomeState(
         enableAutoTTS: enableAutoTTS ?? this.enableAutoTTS,
         language: language ?? this.language,
         messages: messages ?? this.messages,
-        isLoading: isLoading ?? this.isLoading);
+        isLoading: isLoading ?? this.isLoading,
+        isSpeaking: isSpeaking ?? this.isSpeaking);
   }
 
   @override
-  List<Object?> get props => [enableAutoTTS, messages, language, isLoading];
+  List<Object?> get props =>
+      [enableAutoTTS, messages, language, isLoading, isSpeaking];
 
   String get getRecentMessageOfUser {
     var str = '';
-    List<XMessage> list = this.messages.where((e) => e.indexChat == 1).toList();
+    List<XMessage> list = List.from(this.messages);
     list = list.reversed.toList();
-    for (var i = 0; i < list.length && i < 3; i++) {
+    for (var i = 0; i < list.length && i < 10; i++) {
       str += '${list[i].msg}.';
     }
     return str;

@@ -13,9 +13,16 @@ class AppTTS {
     _tts = FlutterTts();
   }
 
-  void speak(String text) async {
+  void speak(String text, {void Function()? callback}) async {
+    _tts.setCompletionHandler(() {
+      callback?.call();
+    });
     await _tts.setLanguage(UserPrefs.I.getLanguage().code);
     await _tts.setPitch(1);
     await _tts.speak(text);
+  }
+
+  void stop() async {
+    await _tts.stop();
   }
 }

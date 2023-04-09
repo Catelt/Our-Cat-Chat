@@ -9,6 +9,7 @@ import 'package:my_chat_gpt/src/feature/view/widgets/custom_edit_text.dart';
 import 'package:my_chat_gpt/src/feature/view/widgets/msg_item.dart';
 import 'package:my_chat_gpt/src/localization/localization_utils.dart';
 import 'package:my_chat_gpt/src/network/model/message.dart';
+import 'package:my_chat_gpt/src/services/app_tts.dart';
 import 'package:my_chat_gpt/src/widgets/bottom_select_language.dart';
 import 'package:my_chat_gpt/src/widgets/slide_right_route.dart';
 
@@ -103,10 +104,26 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 )),
-            body: BlocBuilder<HomeCubit, HomeState>(
+            body: BlocConsumer<HomeCubit, HomeState>(
+              listenWhen: (previous, current) =>
+                  previous.isSpeaking != current.isSpeaking,
+              listener: (context, state) async {
+                if (state.isSpeaking < 0) {
+                  AppTTS.I.stop();
+                } else {
+                  final message = state.messages[state.isSpeaking];
+                  AppTTS.I.speak(message.msg, callback: () {
+                    if (state.isSpeaking < 0) return;
+                    if (state.messages[state.isSpeaking] == message) {
+                      context.read<HomeCubit>().pauseSpeaking();
+                    }
+                  });
+                }
+              },
               buildWhen: (previous, current) =>
                   previous.messages != current.messages ||
-                  previous.enableAutoTTS != current.enableAutoTTS,
+                  previous.enableAutoTTS != current.enableAutoTTS ||
+                  previous.isSpeaking != current.isSpeaking,
               builder: (context, state) {
                 return SafeArea(
                   child: Stack(
@@ -125,6 +142,8 @@ class HomePage extends StatelessWidget {
                                 itemBuilder: (context, index) => MsgItem(
                                       item: state.messages[index],
                                       enableAutoTTS: state.enableAutoTTS,
+                                      isSpeaking: state.isSpeaking == index,
+                                      index: index,
                                       isLast:
                                           index == state.messages.length - 1,
                                     ))),

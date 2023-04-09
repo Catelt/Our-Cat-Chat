@@ -12,7 +12,7 @@ class HomeCubit extends Cubit<HomeState> {
   final DomainManager domain;
 
   void onChangeAutoTTS(bool value) {
-    emit(state.copyWith(enableAutoTTS: value));
+    emit(state.copyWith(enableAutoTTS: value, isSpeaking: -1));
     UserPrefs.I.setEnableTTS(value);
   }
 
@@ -47,6 +47,17 @@ class HomeCubit extends Cubit<HomeState> {
         addMessage(message);
       });
     }
+    if (state.enableAutoTTS) {
+      speaking(state.messages.length - 1);
+    }
     emit(state.copyWith(isLoading: false));
+  }
+
+  void speaking(int index) {
+    emit(state.copyWith(isSpeaking: index));
+  }
+
+  void pauseSpeaking() {
+    emit(state.copyWith(isSpeaking: -1));
   }
 }
