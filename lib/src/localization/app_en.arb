@@ -8,5 +8,25 @@
         "type": "String"
       }
     }
-  }
+  },
+
+  "common_yes": "Yes",
+  "common_no": "No",
+  
+  "title_home_appbar": "Chat GPT",
+  "title_setting_appbar": "Setting",
+
+  "hint_edit_text": "Start typing or taking",
+  "is_listening_gpt": "GPT bot is listening...",
+
+  "section_tts": "Auto TTS replies",
+  "section_speech": "Speech language",
+  "button_delete_messages": "Deleted all messages",
+
+  "title_dialog_delete": "Are you sure?",
+  "content_dialog_delete": "You will deleted all message",
+
+  "snack_bar_delete_messages": "Messages have been deleted",
+
+  "title_bottom_select_language": "Select speech language"
 }

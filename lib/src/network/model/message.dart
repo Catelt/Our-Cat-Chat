@@ -1,4 +1,5 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 class XMessage {
   String msg;
   int indexChat; // 0 is Chat GPT, 1 is user
@@ -29,4 +30,25 @@ class XMessage {
       time: time ?? this.time,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'msg': msg,
+      'indexChat': indexChat,
+      'time': time.millisecondsSinceEpoch,
+    };
+  }
+
+  factory XMessage.fromMap(Map<String, dynamic> map) {
+    return XMessage(
+      msg: map['msg'] as String,
+      indexChat: map['indexChat'] as int,
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory XMessage.fromJson(String source) =>
+      XMessage.fromMap(json.decode(source) as Map<String, dynamic>);
 }

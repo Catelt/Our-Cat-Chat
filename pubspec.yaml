@@ -20,6 +20,7 @@ dependencies:
   http: ^0.13.5
   speech_to_text: ^6.1.1
   flutter_tts: ^3.6.3
+  shared_preferences: ^2.0.18
 
   # STATE MANAGEMENT
   flutter_bloc: ^8.1.2

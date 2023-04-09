@@ -1,0 +1,32 @@
+{
+  "common_appTitle": "My Chat GPT",
+  "common_appVersion": "Phiên bản {value}",
+  "@common_appVersion": {
+    "description": "Phiên bản của ứng dụng",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+
+  "common_yes": "Đúng",
+  "common_no": "Không",
+
+  "title_home_appbar": "Chat GPT",
+  "title_setting_appbar": "Cài đặt",
+
+  "hint_edit_text": "Nhập hoặc bấm micro để nói",
+  "is_listening_gpt": "GPT bot đang lắng nghe...",
+
+  "section_tts": "Tự động phản hồi",
+  "section_speech": "Ngôn ngữ phản hồi",
+  "button_delete_messages": "Xóa hết tin nhắn",
+
+  "title_dialog_delete": "Bạn có chắc chắn?",
+  "content_dialog_delete": "Bạn sẽ xóa hết tin nhắn",
+
+  "snack_bar_delete_messages": "Tất cả tin nhắn đã được xóa",
+
+  "title_bottom_select_language": "Chọn ngôn ngữ phản hồi"
+}

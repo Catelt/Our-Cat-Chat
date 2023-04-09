@@ -2,37 +2,26 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:my_chat_gpt/src/constants/app_sizes.dart';
 import 'package:my_chat_gpt/src/constants/images.dart';
 import 'package:my_chat_gpt/src/feature/logic/cubit/home_cubit.dart';
 import 'package:my_chat_gpt/src/feature/view/setting_page.dart';
 import 'package:my_chat_gpt/src/feature/view/widgets/custom_edit_text.dart';
 import 'package:my_chat_gpt/src/feature/view/widgets/msg_item.dart';
+import 'package:my_chat_gpt/src/localization/localization_utils.dart';
 import 'package:my_chat_gpt/src/network/model/message.dart';
+import 'package:my_chat_gpt/src/widgets/bottom_select_language.dart';
 import 'package:my_chat_gpt/src/widgets/slide_right_route.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({super.key});
-  final FlutterTts tts = FlutterTts();
-
-  void _speak(String text) async {
-    await tts.setLanguage('en-US');
-    await tts.setPitch(1);
-    await tts.speak(text);
-  }
-
+  const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomeCubit(),
-      child: _homeView(context),
-    );
+    return _homeView(context);
   }
 
   Widget _homeView(BuildContext context) => BlocBuilder<HomeCubit, HomeState>(
-        buildWhen: (previous, current) =>
-            previous.enableAutoTTS != current.enableAutoTTS,
+        buildWhen: (previous, current) => previous.language != current.language,
         builder: (context, state) {
           return Scaffold(
             extendBodyBehindAppBar: true,
@@ -52,88 +41,33 @@ class HomePage extends StatelessWidget {
                             width: Sizes.p36,
                           ),
                           Gaps.w16,
-                          const Text(
-                            'Chat GPT',
-                            style: TextStyle(
+                          Text(
+                            S.of(context).title_home_appbar,
+                            style: const TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
                           IconButton(
-                              onPressed: () {
-                                context
-                                    .read<HomeCubit>()
-                                    .onChangeAutoTTS(!state.enableAutoTTS);
-                              },
-                              icon: state.enableAutoTTS
-                                  ? const Icon(Icons.volume_up)
-                                  : const Icon(Icons.volume_off_rounded)),
-                          IconButton(
                               onPressed: () async {
                                 await showModalBottomSheet(
                                     context: context,
-                                    builder: (context) {
-                                      return Padding(
-                                        padding:
-                                            const EdgeInsets.all(Sizes.p16),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              "Select Speech Language",
-                                              style: TextStyle(fontSize: 18),
-                                            ),
-                                            Gaps.h12,
-                                            ListView.separated(
-                                              shrinkWrap: true,
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              itemBuilder: (context, index) {
-                                                return Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      vertical: Sizes.p12),
-                                                  child: Row(children: [
-                                                    Image.asset(
-                                                      XImagePath.botImage,
-                                                      height: 24,
-                                                      width: 24,
-                                                    ),
-                                                    Gaps.w8,
-                                                    Text(
-                                                      "Việt Nam",
-                                                      style: TextStyle(
-                                                          fontSize: Sizes.p16),
-                                                    ),
-                                                    Spacer(),
-                                                    Icon(Icons.check)
-                                                  ]),
-                                                );
-                                              },
-                                              itemCount: 2,
-                                              separatorBuilder:
-                                                  (context, index) {
-                                                return SizedBox(
-                                                  width: double.infinity,
-                                                  child: Divider(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .surfaceVariant,
-                                                    height: 2,
-                                                  ),
-                                                );
-                                              },
-                                            )
-                                          ],
-                                        ),
+                                    builder: (_) {
+                                      return BlocProvider.value(
+                                        value: context.read<HomeCubit>(),
+                                        child: const BottomSelectLanguage(),
                                       );
                                     });
                               },
-                              icon: Icon(Icons.language)),
+                              icon: Image.asset(
+                                state.language.icon,
+                                height: 24,
+                                width: 28,
+                              )),
                           IconButton(
                               onPressed: () {
                                 Navigator.push(
                                   context,
-                                  SlideRightRoute(page: const SettingPage()),
+                                  SlideRightRoute(page: SettingPage()),
                                 );
                               },
                               icon: const Icon(Icons.settings))
@@ -144,7 +78,8 @@ class HomePage extends StatelessWidget {
                 )),
             body: BlocBuilder<HomeCubit, HomeState>(
               buildWhen: (previous, current) =>
-                  previous.messages != current.messages,
+                  previous.messages != current.messages ||
+                  previous.enableAutoTTS != current.enableAutoTTS,
               builder: (context, state) {
                 return SafeArea(
                   child: Stack(
@@ -158,11 +93,9 @@ class HomePage extends StatelessWidget {
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: state.messages.length,
                                 itemBuilder: (context, index) => MsgItem(
-                                    item: state.messages[index],
-                                    enableAutoTTS: state.enableAutoTTS,
-                                    onSpeak: (text) {
-                                      _speak(text);
-                                    }))),
+                                      item: state.messages[index],
+                                      enableAutoTTS: state.enableAutoTTS,
+                                    ))),
                       ),
                       Positioned(
                           bottom: 20,
@@ -170,9 +103,8 @@ class HomePage extends StatelessWidget {
                           right: Sizes.p16,
                           child: CustomEditText(
                             onSendText: (text) {
-                              context
-                                  .read<HomeCubit>()
-                                  .addMessage(XMessage.newMsg(text));
+                              context.read<HomeCubit>().addMessage(
+                                  XMessage.newMsg(text, indexChat: 0));
                             },
                           ))
                     ],

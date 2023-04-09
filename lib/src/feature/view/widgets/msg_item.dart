@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:my_chat_gpt/src/constants/app_sizes.dart';
 import 'package:my_chat_gpt/src/constants/images.dart';
 import 'package:my_chat_gpt/src/network/model/message.dart';
+import 'package:my_chat_gpt/src/services/app_tts.dart';
 
 class MsgItem extends StatelessWidget {
-  const MsgItem(
-      {super.key,
-      required this.item,
-      required this.onSpeak,
-      this.enableAutoTTS = false});
+  const MsgItem({super.key, required this.item, this.enableAutoTTS = false});
 
   final XMessage item;
-  final void Function(String) onSpeak;
   final bool enableAutoTTS;
 
   @override
@@ -54,7 +50,7 @@ class MsgItem extends StatelessWidget {
             visible: !enableAutoTTS,
             child: IconButton(
                 onPressed: () {
-                  onSpeak(item.msg);
+                  AppTTS.I.speak(item.msg);
                 },
                 icon: Icon(
                   Icons.play_circle_outline,

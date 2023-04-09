@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_chat_gpt/main.dart';
 import 'package:my_chat_gpt/src/constants/app_sizes.dart';
+import 'package:my_chat_gpt/src/localization/localization_utils.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:speech_to_text/speech_recognition_result.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 
 class CustomEditText extends StatefulWidget {
   const CustomEditText({super.key, required this.onSendText});
@@ -74,9 +74,9 @@ class _CustomEditTextState extends State<CustomEditText> {
               decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceVariant,
                   borderRadius: BorderRadius.circular(Sizes.p12)),
-              child: const Text(
-                'GPT bot is listening...',
-                style: TextStyle(
+              child: Text(
+                S.of(context).is_listening_gpt,
+                style: const TextStyle(
                   fontSize: Sizes.p16,
                 ),
               )),
@@ -93,7 +93,7 @@ class _CustomEditTextState extends State<CustomEditText> {
                 maxLines: null,
                 controller: controller,
                 decoration: InputDecoration(
-                  hintText: 'Start typing or taking',
+                  hintText: S.of(context).hint_edit_text,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(Sizes.p12),
                     borderSide: BorderSide.none,
