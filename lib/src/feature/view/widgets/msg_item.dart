@@ -59,7 +59,7 @@ class MsgItem extends StatelessWidget {
                         TyperAnimatedText(
                           item.msg,
                           textStyle: const TextStyle(fontSize: Sizes.p16),
-                          speed: const Duration(milliseconds: 100),
+                          speed: const Duration(milliseconds: 50),
                         ),
                       ],
                       isRepeatingAnimation: false,
