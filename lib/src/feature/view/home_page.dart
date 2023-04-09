@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_chat_gpt/src/constants/app_sizes.dart';
@@ -19,7 +20,9 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _homeView(BuildContext context) => BlocBuilder<HomeCubit, HomeState>(
-        buildWhen: (previous, current) => previous.language != current.language,
+        buildWhen: (previous, current) =>
+            previous.language != current.language ||
+            previous.isLoading != current.isLoading,
         builder: (context, state) {
           return Scaffold(
             extendBodyBehindAppBar: true,
@@ -44,6 +47,32 @@ class HomePage extends StatelessWidget {
                             style: const TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
+                          Visibility(
+                              visible: state.isLoading,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    S.of(context).title_home_appbar_thinking,
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  AnimatedTextKit(
+                                    animatedTexts: [
+                                      TyperAnimatedText(
+                                        ' . . .',
+                                        textStyle: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                        speed:
+                                            const Duration(milliseconds: 500),
+                                      ),
+                                    ],
+                                    repeatForever: true,
+                                  ),
+                                ],
+                              )),
                           const Spacer(),
                           IconButton(
                               onPressed: () async {
@@ -82,9 +111,12 @@ class HomePage extends StatelessWidget {
                 return SafeArea(
                   child: Stack(
                     children: [
-                      SizedBox(
+                      Container(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
                         height: double.infinity,
                         child: SingleChildScrollView(
+                            reverse: true,
                             child: ListView.builder(
                                 padding: const EdgeInsets.only(bottom: 70),
                                 shrinkWrap: true,
@@ -93,6 +125,8 @@ class HomePage extends StatelessWidget {
                                 itemBuilder: (context, index) => MsgItem(
                                       item: state.messages[index],
                                       enableAutoTTS: state.enableAutoTTS,
+                                      isLast:
+                                          index == state.messages.length - 1,
                                     ))),
                       ),
                       Positioned(
@@ -102,7 +136,8 @@ class HomePage extends StatelessWidget {
                           child: CustomEditText(
                             onSendText: (text) {
                               context.read<HomeCubit>().addMessage(
-                                  XMessage.newMsg(text, indexChat: 0));
+                                  XMessage.newMsg(text, indexChat: 1));
+                              context.read<HomeCubit>().sendMessage(text);
                             },
                           ))
                     ],

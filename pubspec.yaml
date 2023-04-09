@@ -21,6 +21,7 @@ dependencies:
   speech_to_text: ^6.1.1
   flutter_tts: ^3.6.3
   shared_preferences: ^2.0.18
+  animated_text_kit: ^4.2.2
 
   # STATE MANAGEMENT
   flutter_bloc: ^8.1.2
