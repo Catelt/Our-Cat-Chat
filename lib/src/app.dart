@@ -31,8 +31,8 @@ class MyApp extends StatelessWidget {
               supportedLocales: const [Locale('en', ''), Locale('vi', '')],
               onGenerateTitle: (BuildContext context) =>
                   S.of(context).common_appTitle,
-              theme:
-                  ThemeData(useMaterial3: true, colorSchemeSeed: Colors.purple),
+              theme: ThemeData(
+                  useMaterial3: true, colorSchemeSeed: const Color(0xFF926BF7)),
               home: const HomePage(),
             );
           },

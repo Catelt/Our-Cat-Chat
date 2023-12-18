@@ -1,8 +1,8 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_chat_gpt/gen/assets.gen.dart';
 import 'package:my_chat_gpt/src/constants/app_sizes.dart';
-import 'package:my_chat_gpt/src/constants/images.dart';
 import 'package:my_chat_gpt/src/feature/logic/home_cubit.dart';
 import 'package:my_chat_gpt/src/network/model/message.dart';
 
@@ -40,8 +40,7 @@ class MsgItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(
-            XImagePath.botImage,
+          Assets.images.icApp.image(
             height: 30,
             width: 30,
           ),

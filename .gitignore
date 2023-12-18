@@ -217,3 +217,5 @@ proguard/
 
 # NDK
 obj/
+
+lib/src/constants/api_constant.dart

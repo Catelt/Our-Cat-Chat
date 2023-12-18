@@ -42,7 +42,7 @@ class HomeState extends Equatable {
 
   String get getRecentMessageOfUser {
     var str = '';
-    List<XMessage> list = List.from(this.messages);
+    List<XMessage> list = List.from(messages);
     list = list.reversed.toList();
     for (var i = 0; i < list.length && i < 10; i++) {
       str += '${list[i].msg}.';

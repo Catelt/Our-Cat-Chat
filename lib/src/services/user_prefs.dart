@@ -3,7 +3,7 @@ import 'package:my_chat_gpt/src/network/model/language.dart';
 import 'package:my_chat_gpt/src/network/model/message.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class _keys {
+mixin _keys {
   static const String language = 'language';
   static const String messages = 'messages';
   static const String enableTTS = 'enable_tts';
