@@ -10,6 +10,7 @@ import 'package:my_chat_gpt/src/localization/localization_utils.dart';
 import 'package:my_chat_gpt/src/network/model/message.dart';
 import 'package:my_chat_gpt/src/network/model/role.dart';
 import 'package:my_chat_gpt/src/services/app_tts.dart';
+import 'package:my_chat_gpt/src/widgets/bottom_select_language.dart';
 import 'package:my_chat_gpt/src/widgets/slide_right_route.dart';
 
 class HomePage extends StatelessWidget {
@@ -81,22 +82,22 @@ class HomePage extends StatelessWidget {
                                   ],
                                 )),
                           ),
-                          // IconButton(
-                          //     onPressed: () async {
-                          //       await showModalBottomSheet(
-                          //           context: context,
-                          //           builder: (_) {
-                          //             return BlocProvider.value(
-                          //               value: context.read<HomeCubit>(),
-                          //               child: const BottomSelectLanguage(),
-                          //             );
-                          //           });
-                          //     },
-                          //     icon: Image.asset(
-                          //       state.language.icon,
-                          //       height: 24,
-                          //       width: 28,
-                          //     )),
+                          IconButton(
+                              onPressed: () async {
+                                await showModalBottomSheet(
+                                    context: context,
+                                    builder: (_) {
+                                      return BlocProvider.value(
+                                        value: context.read<HomeCubit>(),
+                                        child: const BottomSelectLanguage(),
+                                      );
+                                    });
+                              },
+                              icon: Image.asset(
+                                state.language.icon,
+                                height: 24,
+                                width: 28,
+                              )),
                           IconButton(
                               onPressed: () {
                                 Navigator.push(

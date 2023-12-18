@@ -27,8 +27,8 @@ class SettingPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: Sizes.p12),
           child: Column(children: [
             autoTTSSection(),
-            // Gaps.h8,
-            // speechSection(),
+            Gaps.h8,
+            speechSection(),
             Gaps.h16,
             SizedBox(
               width: double.infinity,
