@@ -24,12 +24,12 @@ class MsgItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isLeft = item.indexChat == 0;
+    final isLeft = item.role.isModel;
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p12).add(
             EdgeInsets.only(
                 left: isLeft ? 0 : Sizes.p16, right: isLeft ? Sizes.p16 : 0)),
-        child: item.indexChat == 0 ? msgBot(context) : msgUser(context));
+        child: isLeft ? msgBot(context) : msgUser(context));
   }
 
   Widget msgBot(BuildContext context) {

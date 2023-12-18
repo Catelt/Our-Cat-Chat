@@ -40,13 +40,14 @@ class HomeState extends Equatable {
   List<Object?> get props =>
       [enableAutoTTS, messages, language, isLoading, isSpeaking];
 
-  String get getRecentMessageOfUser {
-    var str = '';
+  List<MContent> get getRecentMessage {
     List<XMessage> list = List.from(messages);
+    List<MContent> result = [];
     list = list.reversed.toList();
     for (var i = 0; i < list.length && i < 10; i++) {
-      str += '${list[i].msg}.';
+      final e = list[i];
+      result.add(MContent(parts: [MPart(text: e.msg)], role: e.role));
     }
-    return str;
+    return result.reversed.toList();
   }
 }

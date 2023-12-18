@@ -78,7 +78,7 @@ class _CustomEditTextState extends State<CustomEditText> {
                     color: Theme.of(context).colorScheme.surfaceVariant,
                     borderRadius: BorderRadius.circular(Sizes.p12)),
                 child: Text(
-                  S.of(context).is_listening_gpt,
+                  S.of(context).is_listening_gemini,
                   style: const TextStyle(
                     fontSize: Sizes.p16,
                   ),

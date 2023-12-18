@@ -1,40 +1,47 @@
 import 'dart:convert';
 
-class XMessage {
-  String msg;
-  int indexChat; // 0 is Chat GPT, 1 is user
-  DateTime time;
+import 'package:equatable/equatable.dart';
 
-  XMessage({
+import 'package:my_chat_gpt/src/network/model/role.dart';
+
+class XMessage extends Equatable {
+  final String msg;
+  final MRole role;
+  final DateTime time;
+
+  const XMessage({
     required this.msg,
     required this.time,
-    this.indexChat = 1,
+    this.role = MRole.user,
   });
 
-  factory XMessage.newMsg(String msg, {int indexChat = 1}) {
+  factory XMessage.newMsg(String msg, {MRole role = MRole.user}) {
     return XMessage(
       msg: msg,
       time: DateTime.now(),
-      indexChat: indexChat,
+      role: role,
     );
   }
 
   XMessage copyWith({
     String? msg,
-    int? indexChat,
+    MRole? role,
     DateTime? time,
   }) {
     return XMessage(
       msg: msg ?? this.msg,
-      indexChat: indexChat ?? this.indexChat,
+      role: role ?? this.role,
       time: time ?? this.time,
     );
   }
 
+  @override
+  List<Object> get props => [msg, role, time];
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'msg': msg,
-      'indexChat': indexChat,
+      'role': role.name,
       'time': time.millisecondsSinceEpoch,
     };
   }
@@ -42,7 +49,7 @@ class XMessage {
   factory XMessage.fromMap(Map<String, dynamic> map) {
     return XMessage(
       msg: map['msg'] as String,
-      indexChat: map['indexChat'] as int,
+      role: MRole.fromJson(map['role']),
       time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
     );
   }

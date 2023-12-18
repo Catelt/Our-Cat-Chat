@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_chat_gpt/src/network/domain_manager.dart';
+import 'package:my_chat_gpt/src/network/model/content.dart';
 import 'package:my_chat_gpt/src/network/model/language.dart';
 import 'package:my_chat_gpt/src/network/model/message.dart';
 import 'package:my_chat_gpt/src/services/user_prefs.dart';
@@ -35,20 +36,17 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> sendMessage(String message) async {
     emit(state.copyWith(isLoading: true));
-    String str = state.getRecentMessageOfUser;
-    if (str.isNotEmpty) {
-      str = '$str $message';
-    } else {
-      str = message;
-    }
-    final result = await domain.gpt.sendMessage(message: message);
-    if (result.isSuccess) {
-      result.data?.forEach((message) {
-        addMessage(message);
-      });
-    }
-    if (state.enableAutoTTS) {
-      speaking(state.messages.length - 1);
+    List<MContent> contents = state.getRecentMessage;
+    List<XMessage> messages = List.from(state.messages);
+
+    final response = await domain.gemini.sendMessage(contents: contents);
+    if (response.isSuccess && response.data != null) {
+      messages.add(response.data!);
+      emit(state.copyWith(messages: messages));
+
+      if (state.enableAutoTTS) {
+        speaking(messages.length - 1);
+      }
     }
     emit(state.copyWith(isLoading: false));
   }

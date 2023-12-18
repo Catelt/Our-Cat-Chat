@@ -1,6 +1,6 @@
-# My Chat GPT
+# Our Cat Chat
 
-This is small project for GPT chat
+This is small project for Gemini chat
 
 ## How to Use 
 

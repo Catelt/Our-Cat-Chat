@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_chat_gpt/gen/assets.gen.dart';
@@ -9,8 +8,8 @@ import 'package:my_chat_gpt/src/feature/view/widgets/custom_edit_text.dart';
 import 'package:my_chat_gpt/src/feature/view/widgets/msg_item.dart';
 import 'package:my_chat_gpt/src/localization/localization_utils.dart';
 import 'package:my_chat_gpt/src/network/model/message.dart';
+import 'package:my_chat_gpt/src/network/model/role.dart';
 import 'package:my_chat_gpt/src/services/app_tts.dart';
-import 'package:my_chat_gpt/src/widgets/bottom_select_language.dart';
 import 'package:my_chat_gpt/src/widgets/slide_right_route.dart';
 
 class HomePage extends StatelessWidget {
@@ -47,49 +46,44 @@ class HomePage extends StatelessWidget {
                             style: const TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
-                          Visibility(
-                              visible: state.isLoading,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    S.of(context).title_home_appbar_thinking,
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  AnimatedTextKit(
-                                    animatedTexts: [
-                                      TyperAnimatedText(
-                                        ' . . .',
-                                        textStyle: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                        speed:
-                                            const Duration(milliseconds: 500),
+                          Expanded(
+                            child: Visibility(
+                                visible: state.isLoading,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        S
+                                            .of(context)
+                                            .title_home_appbar_thinking,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.visible,
                                       ),
-                                    ],
-                                    repeatForever: true,
-                                  ),
-                                ],
-                              )),
-                          const Spacer(),
-                          IconButton(
-                              onPressed: () async {
-                                await showModalBottomSheet(
-                                    context: context,
-                                    builder: (_) {
-                                      return BlocProvider.value(
-                                        value: context.read<HomeCubit>(),
-                                        child: const BottomSelectLanguage(),
-                                      );
-                                    });
-                              },
-                              icon: Image.asset(
-                                state.language.icon,
-                                height: 24,
-                                width: 28,
-                              )),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                          // IconButton(
+                          //     onPressed: () async {
+                          //       await showModalBottomSheet(
+                          //           context: context,
+                          //           builder: (_) {
+                          //             return BlocProvider.value(
+                          //               value: context.read<HomeCubit>(),
+                          //               child: const BottomSelectLanguage(),
+                          //             );
+                          //           });
+                          //     },
+                          //     icon: Image.asset(
+                          //       state.language.icon,
+                          //       height: 24,
+                          //       width: 28,
+                          //     )),
                           IconButton(
                               onPressed: () {
                                 Navigator.push(
@@ -155,7 +149,7 @@ class HomePage extends StatelessWidget {
                           child: CustomEditText(
                             onSendText: (text) {
                               context.read<HomeCubit>().addMessage(
-                                  XMessage.newMsg(text, indexChat: 1));
+                                  XMessage.newMsg(text, role: MRole.user));
                               context.read<HomeCubit>().sendMessage(text);
                             },
                           ))

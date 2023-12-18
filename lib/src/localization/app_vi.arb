@@ -1,5 +1,5 @@
 {
-  "common_appTitle": "My Chat GPT",
+  "common_appTitle": "My Chat Gemini",
   "common_appVersion": "Phiên bản {value}",
   "@common_appVersion": {
     "description": "Phiên bản của ứng dụng",
@@ -13,12 +13,12 @@
   "common_yes": "Đúng",
   "common_no": "Không",
 
-  "title_home_appbar": "Chat GPT",
+  "title_home_appbar": "Chat Gemini",
   "title_home_appbar_thinking": " đang nghĩ",
   "title_setting_appbar": "Cài đặt",
 
   "hint_edit_text": "Nhập hoặc bấm micro để nói",
-  "is_listening_gpt": "GPT bot đang lắng nghe...",
+  "is_listening_gemini": "Gemini bot đang lắng nghe...",
 
   "section_tts": "Tự động phản hồi",
   "section_speech": "Ngôn ngữ phản hồi",
