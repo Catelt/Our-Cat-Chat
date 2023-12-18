@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_chat_gpt/src/network/domain_manager.dart';
+import 'package:my_chat_gpt/src/network/model/common/handle.dart';
 import 'package:my_chat_gpt/src/network/model/content.dart';
 import 'package:my_chat_gpt/src/network/model/language.dart';
 import 'package:my_chat_gpt/src/network/model/message.dart';
@@ -35,7 +36,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> sendMessage(String message) async {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(handle: XHandle.loading()));
     List<MContent> contents = state.getRecentMessage;
     List<XMessage> messages = List.from(state.messages);
 
@@ -47,8 +48,10 @@ class HomeCubit extends Cubit<HomeState> {
       if (state.enableAutoTTS) {
         speaking(messages.length - 1);
       }
+      emit(state.copyWith(handle: XHandle.success(true)));
+      return;
     }
-    emit(state.copyWith(isLoading: false));
+    emit(state.copyWith(handle: XHandle.error(response.error)));
   }
 
   void speaking(int index) {

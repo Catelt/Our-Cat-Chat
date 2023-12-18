@@ -16,13 +16,26 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
-    return _homeView(context);
+    return BlocListener<HomeCubit, HomeState>(
+      listenWhen: (previous, current) => previous.handle != current.handle,
+      listener: (context, state) {
+        if (state.handle.isError) {
+          final error = state.handle.message;
+          if (error != null && error.isNotEmpty == true) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(error),
+            ));
+          }
+        }
+      },
+      child: _homeView(context),
+    );
   }
 
   Widget _homeView(BuildContext context) => BlocBuilder<HomeCubit, HomeState>(
         buildWhen: (previous, current) =>
             previous.language != current.language ||
-            previous.isLoading != current.isLoading,
+            previous.handle != current.handle,
         builder: (context, state) {
           return Scaffold(
             extendBodyBehindAppBar: true,
@@ -48,7 +61,7 @@ class HomePage extends StatelessWidget {
                           ),
                           Expanded(
                             child: Visibility(
-                                visible: state.isLoading,
+                                visible: state.handle.isLoading,
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
