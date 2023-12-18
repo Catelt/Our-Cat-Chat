@@ -13,12 +13,12 @@
   "common_yes": "Đúng",
   "common_no": "Không",
 
-  "title_home_appbar": "Chat Gemini",
+  "title_home_appbar": "Mèo Gemini",
   "title_home_appbar_thinking": " đang nghĩ",
   "title_setting_appbar": "Cài đặt",
 
   "hint_edit_text": "Nhập hoặc bấm micro để nói",
-  "is_listening_gemini": "Gemini bot đang lắng nghe...",
+  "is_listening_gemini": "Mèo đang lắng nghe...",
 
   "section_tts": "Tự động phản hồi",
   "section_speech": "Ngôn ngữ phản hồi",

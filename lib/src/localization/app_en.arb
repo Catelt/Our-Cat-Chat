@@ -13,12 +13,12 @@
   "common_yes": "Yes",
   "common_no": "No",
   
-  "title_home_appbar": "Chat Gemini",
+  "title_home_appbar": "Gemini Cat",
   "title_home_appbar_thinking": " is thinking",
   "title_setting_appbar": "Setting",
 
   "hint_edit_text": "Start typing or taking",
-  "is_listening_gemini": "Gemini bot is listening...",
+  "is_listening_gemini": "Cat is listening...",
 
   "section_tts": "Auto TTS replies",
   "section_speech": "Speech language",
