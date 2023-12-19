@@ -18,9 +18,9 @@ dependencies:
   equatable: ^2.0.5
   logger: ^2.0.2+1
   http: ^1.1.0
-  speech_to_text: ^6.1.1
-  flutter_tts: ^3.6.3
-  shared_preferences: ^2.0.18
+  speech_to_text: ^6.5.1
+  flutter_tts: ^3.8.5
+  shared_preferences: ^2.2.2
   animated_text_kit: ^4.2.2
 
   # STATE MANAGEMENT

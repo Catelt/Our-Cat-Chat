@@ -7,8 +7,6 @@ import 'package:my_chat_gpt/src/feature/view/setting_page.dart';
 import 'package:my_chat_gpt/src/feature/view/widgets/custom_edit_text.dart';
 import 'package:my_chat_gpt/src/feature/view/widgets/msg_item.dart';
 import 'package:my_chat_gpt/src/localization/localization_utils.dart';
-import 'package:my_chat_gpt/src/network/model/message.dart';
-import 'package:my_chat_gpt/src/network/model/role.dart';
 import 'package:my_chat_gpt/src/services/app_tts.dart';
 import 'package:my_chat_gpt/src/widgets/bottom_select_language.dart';
 import 'package:my_chat_gpt/src/widgets/slide_right_route.dart';
@@ -162,8 +160,6 @@ class HomePage extends StatelessWidget {
                           right: Sizes.p16,
                           child: CustomEditText(
                             onSendText: (text) {
-                              context.read<HomeCubit>().addMessage(
-                                  XMessage.newMsg(text, role: MRole.user));
                               context.read<HomeCubit>().sendMessage(text);
                             },
                           ))
