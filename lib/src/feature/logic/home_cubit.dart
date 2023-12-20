@@ -41,15 +41,22 @@ class HomeCubit extends Cubit<HomeState> {
     addMessage(XMessage.newMsg(message, role: MRole.user));
     emit(state.copyWith(handle: XHandle.loading()));
     List<MContent> contents = state.getRecentMessage;
-    List<XMessage> messages = List.from(state.messages);
-    final response = await domain.gemini.sendMessage(contents: contents);
-    if (response.isSuccess && response.data != null) {
-      messages.add(response.data!);
-      emit(state.copyWith(messages: messages));
-
-      if (state.enableAutoTTS) {
-        speaking(messages.length - 1);
-      }
+    var messageResponse =
+        XMessage(msg: "", time: DateTime.now(), role: MRole.model);
+    final response = await domain.gemini.sendMessageStream(
+      contents: contents,
+      snapshot: (value) {
+        List<XMessage> messages = List.from(state.messages);
+        if (messageResponse.msg.isNotEmpty &&
+            messages.last.role == MRole.model) {
+          messages.removeLast();
+        }
+        messageResponse = messageResponse.copyWith(msg: value);
+        messages.add(messageResponse);
+        emit(state.copyWith(messages: messages));
+      },
+    );
+    if (response.isSuccess) {
       emit(state.copyWith(handle: XHandle.success(true)));
       return;
     }

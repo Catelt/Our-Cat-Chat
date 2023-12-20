@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_chat_gpt/gen/assets.gen.dart';
@@ -33,7 +32,6 @@ class MsgItem extends StatelessWidget {
   }
 
   Widget msgBot(BuildContext context) {
-    final recent = (item.time.difference(DateTime.now()).inSeconds).abs() < 5;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: Sizes.p4),
       child: Row(
@@ -52,22 +50,10 @@ class MsgItem extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(Sizes.p12)),
-              child: isLast && recent
-                  ? AnimatedTextKit(
-                      animatedTexts: [
-                        TyperAnimatedText(
-                          item.msg,
-                          textStyle: const TextStyle(fontSize: Sizes.p16),
-                          speed: const Duration(milliseconds: 50),
-                        ),
-                      ],
-                      isRepeatingAnimation: false,
-                      repeatForever: false,
-                    )
-                  : Text(
-                      item.msg,
-                      style: const TextStyle(fontSize: Sizes.p16),
-                    ),
+              child: Text(
+                item.msg,
+                style: const TextStyle(fontSize: Sizes.p16),
+              ),
             ),
           ),
           Visibility(

@@ -27,4 +27,43 @@ class GeminiRepositoryImpl extends GeminiRepository {
       return MResult.error(e.toString());
     }
   }
+
+  @override
+  Future<MResult<bool>> sendMessageStream(
+      {required List<MContent> contents,
+      required void Function(String) snapshot}) async {
+    try {
+      final body = MGeminiRequest(contents: contents);
+      final uri = Uri.https(
+          ApiConstant.domain,
+          "v1beta/models/gemini-pro:streamGenerateContent",
+          {'key': ApiConstant.key});
+      var request = Request('Post', uri);
+      request.body = body.toJson();
+      var streamedResponse = await request.send();
+      var text = '';
+
+      await for (var chunk in streamedResponse.stream.transform(utf8.decoder)) {
+        final index = chunk.indexOf("\"text\":");
+        if (index < 0) continue;
+        final indexEnd = chunk.substring(index).indexOf("}");
+        final start = index + 8;
+        final end = index + indexEnd;
+        if (start <= end) {
+          final split = chunk
+              .substring(start, end)
+              .trim()
+              .replaceAll("\"", "")
+              .replaceAll("\\n", "\n");
+          log(split);
+          text += split;
+          snapshot.call(text);
+        }
+      }
+
+      return MResult.success(true);
+    } catch (e) {
+      return MResult.error(e.toString());
+    }
+  }
 }
