@@ -14,11 +14,6 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this.domain) : super(HomeState.ds());
   final DomainManager domain;
 
-  void onChangeAutoTTS(bool value) {
-    emit(state.copyWith(enableAutoTTS: value, isSpeaking: -1));
-    UserPrefs.I.setEnableTTS(value);
-  }
-
   void onChangeLanguage(XLanguage language) {
     emit(state.copyWith(language: language));
     UserPrefs.I.setLanguage(language);
@@ -27,8 +22,12 @@ class HomeCubit extends Cubit<HomeState> {
   void addMessage(XMessage value) {
     List<XMessage> newList = List.from(state.messages);
     newList.add(value);
-    emit(state.copyWith(messages: newList));
-    UserPrefs.I.saveMessages(newList);
+    onChangeMessage(newList);
+  }
+
+  void onChangeMessage(List<XMessage> messages) {
+    emit(state.copyWith(messages: messages));
+    UserPrefs.I.saveMessages(messages);
   }
 
   void removeAllMessage() {
@@ -53,7 +52,7 @@ class HomeCubit extends Cubit<HomeState> {
         }
         messageResponse = messageResponse.copyWith(msg: value);
         messages.add(messageResponse);
-        emit(state.copyWith(messages: messages));
+        onChangeMessage(messages);
       },
     );
     if (response.isSuccess) {

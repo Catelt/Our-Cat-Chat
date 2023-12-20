@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_chat_gpt/gen/assets.gen.dart';
 import 'package:my_chat_gpt/src/constants/app_sizes.dart';
-import 'package:my_chat_gpt/src/feature/logic/home_cubit.dart';
 import 'package:my_chat_gpt/src/network/model/message.dart';
 
 class MsgItem extends StatelessWidget {
   const MsgItem({
     super.key,
     required this.item,
-    this.enableAutoTTS = false,
     this.isSpeaking = false,
     this.isLast = false,
     this.index = 0,
   });
 
   final XMessage item;
-  final bool enableAutoTTS;
   final bool isSpeaking;
   final bool isLast;
   final int index;
@@ -56,28 +52,6 @@ class MsgItem extends StatelessWidget {
               ),
             ),
           ),
-          Visibility(
-            visible: !enableAutoTTS,
-            child: IconButton(
-                onPressed: () {
-                  if (isSpeaking) {
-                    context.read<HomeCubit>().pauseSpeaking();
-                  } else {
-                    context.read<HomeCubit>().speaking(index);
-                  }
-                },
-                icon: isSpeaking
-                    ? Icon(
-                        Icons.pause_circle_outline_outlined,
-                        size: Sizes.p24,
-                        color: Theme.of(context).colorScheme.primary,
-                      )
-                    : Icon(
-                        Icons.play_circle_outline,
-                        size: Sizes.p24,
-                        color: Theme.of(context).colorScheme.primary,
-                      )),
-          )
         ],
       ),
     );

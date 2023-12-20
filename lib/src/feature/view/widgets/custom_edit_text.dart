@@ -93,6 +93,7 @@ class _CustomEditTextState extends State<CustomEditText> {
             children: [
               Expanded(
                   child: TextField(
+                textInputAction: TextInputAction.done,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 controller: controller,
@@ -106,6 +107,9 @@ class _CustomEditTextState extends State<CustomEditText> {
                   filled: true,
                   contentPadding: const EdgeInsets.all(Sizes.p12),
                 ),
+                onSubmitted: (value) {
+                  _handleSendText();
+                },
               )),
               IconButton(
                 onPressed: () {

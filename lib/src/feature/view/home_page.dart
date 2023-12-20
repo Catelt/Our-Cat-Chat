@@ -3,13 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_chat_gpt/gen/assets.gen.dart';
 import 'package:my_chat_gpt/src/constants/app_sizes.dart';
 import 'package:my_chat_gpt/src/feature/logic/home_cubit.dart';
-import 'package:my_chat_gpt/src/feature/view/setting_page.dart';
 import 'package:my_chat_gpt/src/feature/view/widgets/custom_edit_text.dart';
 import 'package:my_chat_gpt/src/feature/view/widgets/msg_item.dart';
 import 'package:my_chat_gpt/src/localization/localization_utils.dart';
-import 'package:my_chat_gpt/src/services/app_tts.dart';
 import 'package:my_chat_gpt/src/widgets/bottom_select_language.dart';
-import 'package:my_chat_gpt/src/widgets/slide_right_route.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -81,54 +78,36 @@ class HomePage extends StatelessWidget {
                                 )),
                           ),
                           IconButton(
-                              onPressed: () async {
-                                await showModalBottomSheet(
-                                    context: context,
-                                    builder: (_) {
-                                      return BlocProvider.value(
-                                        value: context.read<HomeCubit>(),
-                                        child: const BottomSelectLanguage(),
-                                      );
-                                    });
-                              },
-                              icon: Image.asset(
-                                state.language.icon,
-                                height: 24,
-                                width: 28,
-                              )),
+                            onPressed: () async {
+                              await showModalBottomSheet(
+                                context: context,
+                                builder: (_) {
+                                  return BlocProvider.value(
+                                    value: context.read<HomeCubit>(),
+                                    child: const BottomSelectLanguage(),
+                                  );
+                                },
+                              );
+                            },
+                            icon: Image.asset(
+                              state.language.icon,
+                              height: 24,
+                              width: 28,
+                            ),
+                          ),
                           IconButton(
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  SlideRightRoute(page: const SettingPage()),
-                                );
+                                dialogDeleted(context);
                               },
-                              icon: const Icon(Icons.settings))
+                              icon: const Icon(Icons.delete))
                         ],
                       ),
                     ),
                   ),
                 )),
-            body: BlocConsumer<HomeCubit, HomeState>(
-              listenWhen: (previous, current) =>
-                  previous.enableAutoTTS != current.enableAutoTTS ||
-                  previous.isSpeaking != current.isSpeaking,
-              listener: (context, state) async {
-                if (state.isSpeaking < 0) {
-                  AppTTS.I.stop();
-                } else {
-                  final message = state.messages[state.isSpeaking];
-                  AppTTS.I.speak(message.msg, callback: () {
-                    if (state.isSpeaking < 0) return;
-                    if (state.messages[state.isSpeaking] == message) {
-                      context.read<HomeCubit>().pauseSpeaking();
-                    }
-                  });
-                }
-              },
+            body: BlocBuilder<HomeCubit, HomeState>(
               buildWhen: (previous, current) =>
                   previous.messages != current.messages ||
-                  previous.enableAutoTTS != current.enableAutoTTS ||
                   previous.isSpeaking != current.isSpeaking,
               builder: (context, state) {
                 return SafeArea(
@@ -147,7 +126,6 @@ class HomePage extends StatelessWidget {
                                 itemCount: state.messages.length,
                                 itemBuilder: (context, index) => MsgItem(
                                       item: state.messages[index],
-                                      enableAutoTTS: state.enableAutoTTS,
                                       isSpeaking: state.isSpeaking == index,
                                       index: index,
                                       isLast:
@@ -170,5 +148,32 @@ class HomePage extends StatelessWidget {
             ),
           );
         },
+      );
+
+  void dialogDeleted(BuildContext context) => showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text(S.of(context).title_dialog_delete),
+          content: Text(S.of(context).content_dialog_delete),
+          actions: [
+            TextButton(
+              onPressed: () {
+                context.read<HomeCubit>().removeAllMessage();
+                final snackBar = SnackBar(
+                  content: Text(S.of(context).snack_bar_delete_messages),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                Navigator.pop(context);
+              },
+              child: Text(S.of(context).common_yes),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(S.of(context).common_no),
+            ),
+          ],
+        ),
       );
 }

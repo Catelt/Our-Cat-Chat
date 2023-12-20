@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 mixin _keys {
   static const String language = 'language';
   static const String messages = 'messages';
-  static const String enableTTS = 'enable_tts';
 }
 
 class UserPrefs {
@@ -28,16 +27,6 @@ class UserPrefs {
 
   void setLanguage(XLanguage value) {
     _prefs.setString(_keys.language, value.code.toString().toLowerCase());
-  }
-
-  // enableTTS
-  bool getEnableTTS() {
-    final value = _prefs.getBool(_keys.enableTTS);
-    return value ?? true;
-  }
-
-  void setEnableTTS(bool value) {
-    _prefs.setBool(_keys.enableTTS, value);
   }
 
   // message

@@ -1,7 +1,6 @@
 part of 'home_cubit.dart';
 
 class HomeState extends Equatable {
-  final bool enableAutoTTS;
   final XLanguage language;
   final List<XMessage> messages;
   final XHandle<bool> handle;
@@ -9,7 +8,6 @@ class HomeState extends Equatable {
 
   const HomeState({
     required this.handle,
-    this.enableAutoTTS = true,
     this.messages = const [],
     required this.language,
     this.isSpeaking = -1,
@@ -18,7 +16,6 @@ class HomeState extends Equatable {
   factory HomeState.ds() {
     return HomeState(
       handle: XHandle(),
-      enableAutoTTS: UserPrefs.I.getEnableTTS(),
       messages: UserPrefs.I.getMessages(),
       language: UserPrefs.I.getLanguage(),
     );
@@ -26,13 +23,11 @@ class HomeState extends Equatable {
 
   HomeState copyWith({
     XHandle<bool>? handle,
-    bool? enableAutoTTS,
     XLanguage? language,
     List<XMessage>? messages,
     int? isSpeaking,
   }) {
     return HomeState(
-        enableAutoTTS: enableAutoTTS ?? this.enableAutoTTS,
         language: language ?? this.language,
         messages: messages ?? this.messages,
         handle: handle ?? this.handle,
@@ -40,8 +35,7 @@ class HomeState extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [enableAutoTTS, messages, language, handle, isSpeaking];
+  List<Object?> get props => [messages, language, handle, isSpeaking];
 
   List<MContent> get getRecentMessage {
     List<XMessage> list = List.from(messages);

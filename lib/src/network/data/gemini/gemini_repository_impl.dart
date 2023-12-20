@@ -55,7 +55,6 @@ class GeminiRepositoryImpl extends GeminiRepository {
               .trim()
               .replaceAll("\"", "")
               .replaceAll("\\n", "\n");
-          log(split);
           text += split;
           snapshot.call(text);
         }

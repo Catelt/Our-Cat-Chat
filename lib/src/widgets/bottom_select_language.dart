@@ -32,6 +32,7 @@ class BottomSelectLanguage extends StatelessWidget {
                   return itemLanguage(item,
                       isSelect: item.code == state.language.code, onTap: () {
                     context.read<HomeCubit>().onChangeLanguage(item);
+                    Navigator.pop(context);
                   });
                 },
                 itemCount: AppLanguage.languages.length,
