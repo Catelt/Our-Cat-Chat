@@ -4,6 +4,7 @@ import 'package:my_chat_gpt/gen/assets.gen.dart';
 import 'package:my_chat_gpt/src/constants/app_sizes.dart';
 import 'package:my_chat_gpt/src/network/model/message.dart';
 import 'package:my_chat_gpt/src/utils/base64.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MsgItem extends StatelessWidget {
   const MsgItem({
@@ -89,6 +90,11 @@ class MsgItem extends StatelessWidget {
   Widget _buildMsg(BuildContext context, {Color? color}) {
     return MarkdownBody(
       data: item.msg,
+      onTapLink: (text, href, title) {
+        if (href != null) {
+          launchUrl(Uri.parse(href));
+        }
+      },
       styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
         p: Theme.of(context)
             .textTheme
