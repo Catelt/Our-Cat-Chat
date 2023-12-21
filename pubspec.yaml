@@ -21,6 +21,7 @@ dependencies:
   shared_preferences: ^2.2.2
   image_picker: ^1.0.5
   mime: ^1.0.4
+  flutter_markdown: ^0.6.18+2
 
   # STATE MANAGEMENT
   flutter_bloc: ^8.1.2

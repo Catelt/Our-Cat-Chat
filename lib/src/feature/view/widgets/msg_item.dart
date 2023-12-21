@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:my_chat_gpt/gen/assets.gen.dart';
 import 'package:my_chat_gpt/src/constants/app_sizes.dart';
 import 'package:my_chat_gpt/src/network/model/message.dart';
@@ -46,10 +47,7 @@ class MsgItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildImage(context),
-                  SelectableText(
-                    item.msg,
-                    style: const TextStyle(fontSize: Sizes.p16),
-                  ),
+                  _buildMsg(context),
                 ],
               ),
             ),
@@ -78,16 +76,24 @@ class MsgItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   _buildImage(context),
-                  SelectableText(
-                    item.msg,
-                    style: const TextStyle(
-                        fontSize: Sizes.p16, color: Colors.white),
-                  ),
+                  _buildMsg(context, color: Colors.white),
                 ],
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildMsg(BuildContext context, {Color? color}) {
+    return MarkdownBody(
+      data: item.msg,
+      styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+        p: Theme.of(context)
+            .textTheme
+            .bodyMedium
+            ?.copyWith(fontSize: Sizes.p16, color: color),
       ),
     );
   }
