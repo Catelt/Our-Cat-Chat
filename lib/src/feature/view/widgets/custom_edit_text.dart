@@ -69,6 +69,7 @@ class _CustomEditTextState extends State<CustomEditText> {
                       child: TextField(
                     textInputAction: TextInputAction.done,
                     keyboardType: TextInputType.multiline,
+                    textCapitalization: TextCapitalization.sentences,
                     maxLines: null,
                     controller: controller,
                     decoration: InputDecoration(
