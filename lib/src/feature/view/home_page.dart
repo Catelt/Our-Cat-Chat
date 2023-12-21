@@ -107,8 +107,7 @@ class HomePage extends StatelessWidget {
                 )),
             body: BlocBuilder<HomeCubit, HomeState>(
               buildWhen: (previous, current) =>
-                  previous.messages != current.messages ||
-                  previous.isSpeaking != current.isSpeaking,
+                  previous.messages != current.messages,
               builder: (context, state) {
                 return SafeArea(
                   child: Stack(
@@ -118,27 +117,41 @@ class HomePage extends StatelessWidget {
                             bottom: MediaQuery.of(context).viewInsets.bottom),
                         height: double.infinity,
                         child: SingleChildScrollView(
-                            reverse: true,
-                            child: ListView.builder(
-                                padding: const EdgeInsets.only(bottom: 70),
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: state.messages.length,
-                                itemBuilder: (context, index) => MsgItem(
-                                      item: state.messages[index],
-                                      isSpeaking: state.isSpeaking == index,
-                                      index: index,
-                                      isLast:
-                                          index == state.messages.length - 1,
-                                    ))),
+                          reverse: true,
+                          child: ListView.builder(
+                            padding: const EdgeInsets.only(bottom: 70),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: state.messages.length,
+                            itemBuilder: (context, index) => MsgItem(
+                              item: state.messages[index],
+                            ),
+                          ),
+                        ),
                       ),
                       Positioned(
                           bottom: 20,
                           left: Sizes.p16,
                           right: Sizes.p16,
-                          child: CustomEditText(
-                            onSendText: (text) {
-                              context.read<HomeCubit>().sendMessage(text);
+                          child: BlocBuilder<HomeCubit, HomeState>(
+                            buildWhen: (previous, current) =>
+                                previous.handle != current.handle,
+                            builder: (context, state) {
+                              return CustomEditText(
+                                isLoading: state.handle.isLoading,
+                                onSendText: (text, base64) {
+                                  if (base64.isEmpty) {
+                                    context.read<HomeCubit>().sendMessage(text);
+                                  } else {
+                                    context
+                                        .read<HomeCubit>()
+                                        .sendMessageWithImage(
+                                          text,
+                                          base64,
+                                        );
+                                  }
+                                },
+                              );
                             },
                           ))
                     ],

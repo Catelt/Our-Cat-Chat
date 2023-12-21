@@ -1,8 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
+import 'package:my_chat_gpt/src/app.dart';
 
 class XBlocObserver extends BlocObserver {
-  final Logger log = Logger();
   @override
   void onEvent(Bloc bloc, Object? event) {
     log.i('onEvent $event');

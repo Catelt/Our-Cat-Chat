@@ -2,20 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:my_chat_gpt/gen/assets.gen.dart';
 import 'package:my_chat_gpt/src/constants/app_sizes.dart';
 import 'package:my_chat_gpt/src/network/model/message.dart';
+import 'package:my_chat_gpt/src/utils/base64.dart';
 
 class MsgItem extends StatelessWidget {
   const MsgItem({
     super.key,
     required this.item,
-    this.isSpeaking = false,
-    this.isLast = false,
-    this.index = 0,
   });
 
   final XMessage item;
-  final bool isSpeaking;
-  final bool isLast;
-  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +41,16 @@ class MsgItem extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(Sizes.p12)),
-              child: Text(
-                item.msg,
-                style: const TextStyle(fontSize: Sizes.p16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildImage(context),
+                  Text(
+                    item.msg,
+                    style: const TextStyle(fontSize: Sizes.p16),
+                  ),
+                ],
               ),
             ),
           ),
@@ -71,13 +73,41 @@ class MsgItem extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(Sizes.p12)),
-              child: Text(item.msg,
-                  style: const TextStyle(
-                      fontSize: Sizes.p16, color: Colors.white)),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  _buildImage(context),
+                  Text(
+                    item.msg,
+                    style: const TextStyle(
+                        fontSize: Sizes.p16, color: Colors.white),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildImage(BuildContext context) {
+    if (item.image.isNotEmpty) {
+      final bytes = XBase64.convertBase64ToBytes(item.image);
+      if (bytes != null) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: Sizes.p8),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(Sizes.p8),
+            child: Image.memory(
+              bytes,
+              height: MediaQuery.sizeOf(context).height * 0.1,
+            ),
+          ),
+        );
+      }
+    }
+    return const SizedBox();
   }
 }

@@ -1,12 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mime/mime.dart';
 import 'package:my_chat_gpt/src/network/domain_manager.dart';
 import 'package:my_chat_gpt/src/network/model/common/handle.dart';
 import 'package:my_chat_gpt/src/network/model/content.dart';
+import 'package:my_chat_gpt/src/network/model/inline_data.dart';
 import 'package:my_chat_gpt/src/network/model/language.dart';
 import 'package:my_chat_gpt/src/network/model/message.dart';
+import 'package:my_chat_gpt/src/network/model/part.dart';
 import 'package:my_chat_gpt/src/network/model/role.dart';
 import 'package:my_chat_gpt/src/services/user_prefs.dart';
+import 'package:my_chat_gpt/src/utils/base64.dart';
 
 part 'home_state.dart';
 
@@ -31,13 +35,12 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void removeAllMessage() {
-    emit(state.copyWith(messages: []));
-    UserPrefs.I.saveMessages([]);
+    onChangeMessage([]);
   }
 
   Future<void> sendMessage(String message) async {
     if (message.isEmpty) return;
-    addMessage(XMessage.newMsg(message, role: MRole.user));
+    addMessage(XMessage.newMsg(message));
     emit(state.copyWith(handle: XHandle.loading()));
     List<MContent> contents = state.getRecentMessage;
     var messageResponse =
@@ -62,11 +65,27 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(handle: XHandle.error(response.error)));
   }
 
-  void speaking(int index) {
-    emit(state.copyWith(isSpeaking: index));
-  }
-
-  void pauseSpeaking() {
-    emit(state.copyWith(isSpeaking: -1));
+  Future<void> sendMessageWithImage(String message, String path) async {
+    if (message.isEmpty && path.isEmpty) return;
+    final base64 = await XBase64.convertImageToBase64(path);
+    final type = lookupMimeType(path);
+    if (type == null) return;
+    emit(state.copyWith(handle: XHandle.loading()));
+    List<MPart> parts = [];
+    parts.add(MPart(text: message));
+    parts.add(MPart(inlineData: MInlineData(mimeType: type, data: base64)));
+    addMessage(XMessage.newMsg(message, image: base64));
+    final response = await domain.gemini.sendMessageWithImage(
+      contents: [MContent(parts: parts)],
+    );
+    if (response.isSuccess) {
+      final data = response.data;
+      if (data != null) {
+        addMessage(data);
+        emit(state.copyWith(handle: XHandle.success(true)));
+        return;
+      }
+    }
+    emit(state.copyWith(handle: XHandle.error(response.error)));
   }
 }

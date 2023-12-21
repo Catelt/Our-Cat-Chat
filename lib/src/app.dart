@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:logger/logger.dart';
 import 'package:my_chat_gpt/src/feature/logic/home_cubit.dart';
 import 'package:my_chat_gpt/src/feature/view/home_page.dart';
 import 'package:my_chat_gpt/src/localization/localization_utils.dart';
 import 'package:my_chat_gpt/src/network/domain_manager.dart';
+
+final Logger log = Logger();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

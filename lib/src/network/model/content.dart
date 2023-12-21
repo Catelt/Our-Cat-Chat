@@ -1,43 +1,9 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:my_chat_gpt/src/network/model/part.dart';
 
 import 'role.dart';
-
-class MPart extends Equatable {
-  final String text;
-  const MPart({
-    this.text = '',
-  });
-
-  @override
-  List<Object> get props => [text];
-
-  MPart copyWith({
-    String? text,
-  }) {
-    return MPart(
-      text: text ?? this.text,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'text': text,
-    };
-  }
-
-  factory MPart.fromMap(Map<String, dynamic> map) {
-    return MPart(
-      text: map['text'] as String,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory MPart.fromJson(String source) =>
-      MPart.fromMap(json.decode(source) as Map<String, dynamic>);
-}
 
 class MContent extends Equatable {
   final MRole role;

@@ -29,6 +29,32 @@ class GeminiRepositoryImpl extends GeminiRepository {
   }
 
   @override
+  Future<MResult<XMessage>> sendMessageWithImage(
+      {required List<MContent> contents}) async {
+    try {
+      final body = MGeminiRequest(contents: contents);
+      final response = await http.post(
+          url: "v1beta/models/gemini-pro-vision:generateContent",
+          body: body.toJson());
+      if (response?.body != null) {
+        final data = MGeminiResponse.fromJson(response!.body);
+        if (data.candidates.isNotEmpty) {
+          return MResult.success(
+            XMessage(
+              msg: data.candidates.first.content.parts.first.text,
+              time: DateTime.now(),
+              role: MRole.model,
+            ),
+          );
+        }
+      }
+      return MResult.error(XHttp.unknown);
+    } catch (e) {
+      return MResult.error(e.toString());
+    }
+  }
+
+  @override
   Future<MResult<bool>> sendMessageStream(
       {required List<MContent> contents,
       required void Function(String) snapshot}) async {

@@ -14,6 +14,9 @@ part 'gemini_repository_impl.dart';
 
 abstract class GeminiRepository {
   Future<MResult<XMessage>> sendMessage({required List<MContent> contents});
+  Future<MResult<XMessage>> sendMessageWithImage(
+      {required List<MContent> contents});
+
   Future<MResult<bool>> sendMessageStream({
     required List<MContent> contents,
     required void Function(String) snapshot,

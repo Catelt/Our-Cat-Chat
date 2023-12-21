@@ -4,13 +4,11 @@ class HomeState extends Equatable {
   final XLanguage language;
   final List<XMessage> messages;
   final XHandle<bool> handle;
-  final int isSpeaking;
 
   const HomeState({
     required this.handle,
     this.messages = const [],
     required this.language,
-    this.isSpeaking = -1,
   });
 
   factory HomeState.ds() {
@@ -25,17 +23,16 @@ class HomeState extends Equatable {
     XHandle<bool>? handle,
     XLanguage? language,
     List<XMessage>? messages,
-    int? isSpeaking,
   }) {
     return HomeState(
-        language: language ?? this.language,
-        messages: messages ?? this.messages,
-        handle: handle ?? this.handle,
-        isSpeaking: isSpeaking ?? this.isSpeaking);
+      language: language ?? this.language,
+      messages: messages ?? this.messages,
+      handle: handle ?? this.handle,
+    );
   }
 
   @override
-  List<Object?> get props => [messages, language, handle, isSpeaking];
+  List<Object?> get props => [messages, language, handle];
 
   List<MContent> get getRecentMessage {
     List<XMessage> list = List.from(messages);
