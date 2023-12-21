@@ -17,12 +17,7 @@
   "title_home_appbar_thinking": " is thinking",
   "title_setting_appbar": "Setting",
 
-  "hint_edit_text": "Start typing or taking",
-  "is_listening_gemini": "Cat is listening...",
-
-  "section_tts": "Auto TTS replies",
-  "section_speech": "Speech language",
-  "button_delete_messages": "Deleted all messages",
+  "hint_edit_text": "Start typing",
 
   "title_dialog_delete": "Are you sure?",
   "content_dialog_delete": "You will deleted all message",

@@ -17,12 +17,7 @@
   "title_home_appbar_thinking": " đang nghĩ",
   "title_setting_appbar": "Cài đặt",
 
-  "hint_edit_text": "Nhập hoặc bấm micro để nói",
-  "is_listening_gemini": "Mèo đang lắng nghe...",
-
-  "section_tts": "Tự động phản hồi",
-  "section_speech": "Ngôn ngữ phản hồi",
-  "button_delete_messages": "Xóa hết tin nhắn",
+  "hint_edit_text": "Nhập...",
 
   "title_dialog_delete": "Bạn có chắc chắn?",
   "content_dialog_delete": "Bạn sẽ xóa hết tin nhắn",
