@@ -58,9 +58,9 @@ class XMessage extends Equatable {
 
   factory XMessage.fromMap(Map<String, dynamic> map) {
     return XMessage(
-      msg: map['msg'] as String,
+      msg: map['msg'] != null ? map['msg'] as String : "",
       role: MRole.fromJson(map['role']),
-      image: map['image'] as String,
+      image: map['image'] != null ? map['image'] as String : "",
       time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
     );
   }
