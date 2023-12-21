@@ -40,6 +40,26 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> sendMessage(String message) async {
     if (message.isEmpty) return;
+    emit(state.copyWith(handle: XHandle.loading()));
+    List<MPart> parts = [];
+    parts.add(MPart(text: message));
+    addMessage(XMessage.newMsg(message));
+    final response = await domain.gemini.sendMessage(
+      contents: [MContent(parts: parts)],
+    );
+    if (response.isSuccess) {
+      final data = response.data;
+      if (data != null) {
+        addMessage(data);
+        emit(state.copyWith(handle: XHandle.success(true)));
+        return;
+      }
+    }
+    emit(state.copyWith(handle: XHandle.error(response.error)));
+  }
+
+  Future<void> sendMessageStream(String message) async {
+    if (message.isEmpty) return;
     addMessage(XMessage.newMsg(message));
     emit(state.copyWith(handle: XHandle.loading()));
     List<MContent> contents = state.getRecentMessage;

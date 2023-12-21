@@ -97,16 +97,25 @@ class _CustomEditTextState extends State<CustomEditText> {
                       size: Sizes.p28,
                     ),
                   ),
-                  IconButton(
-                    onPressed: isValid ? _handleSendText : null,
-                    icon: Icon(
-                      Icons.send_rounded,
-                      size: Sizes.p28,
-                      color: isValid
-                          ? Theme.of(context).colorScheme.primary
-                          : null,
+                  if (isLoading)
+                    Container(
+                      padding: const EdgeInsets.all(Sizes.p4),
+                      margin: const EdgeInsets.only(right: Sizes.p4),
+                      width: Sizes.p28,
+                      height: Sizes.p28,
+                      child: const CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  else
+                    IconButton(
+                      onPressed: isValid ? _handleSendText : null,
+                      icon: Icon(
+                        Icons.send_rounded,
+                        size: Sizes.p28,
+                        color: isValid
+                            ? Theme.of(context).colorScheme.primary
+                            : null,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ],

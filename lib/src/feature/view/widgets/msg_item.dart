@@ -46,7 +46,7 @@ class MsgItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildImage(context),
-                  Text(
+                  SelectableText(
                     item.msg,
                     style: const TextStyle(fontSize: Sizes.p16),
                   ),
@@ -78,7 +78,7 @@ class MsgItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   _buildImage(context),
-                  Text(
+                  SelectableText(
                     item.msg,
                     style: const TextStyle(
                         fontSize: Sizes.p16, color: Colors.white),
