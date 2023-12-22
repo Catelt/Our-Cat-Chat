@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_chat_gpt/src/constants/app_language.dart';
 import 'package:my_chat_gpt/src/constants/app_sizes.dart';
-import 'package:my_chat_gpt/src/feature/logic/home_cubit.dart';
+import 'package:my_chat_gpt/src/feature/settings/logic/settings_cubit.dart';
 import 'package:my_chat_gpt/src/localization/localization_utils.dart';
 import 'package:my_chat_gpt/src/network/model/language.dart';
 
@@ -11,7 +11,7 @@ class BottomSelectLanguage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
+    return BlocBuilder<SettingsCubit, SettingsState>(
       buildWhen: (previous, current) => previous.language != current.language,
       builder: (context, state) {
         return Padding(
@@ -31,7 +31,7 @@ class BottomSelectLanguage extends StatelessWidget {
                   final item = AppLanguage.languages[index];
                   return itemLanguage(item,
                       isSelect: item.code == state.language.code, onTap: () {
-                    context.read<HomeCubit>().onChangeLanguage(item);
+                    context.read<SettingsCubit>().onChangeLanguage(item);
                     Navigator.pop(context);
                   });
                 },

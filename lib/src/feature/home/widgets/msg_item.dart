@@ -41,14 +41,15 @@ class MsgItem extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                   vertical: Sizes.p8, horizontal: Sizes.p16),
               decoration: BoxDecoration(
-                  color: Colors.grey[300],
+                  color: Theme.of(context).colorScheme.secondary,
                   borderRadius: BorderRadius.circular(Sizes.p12)),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildImage(context),
-                  _buildMsg(context),
+                  _buildMsg(context,
+                      color: Theme.of(context).colorScheme.background),
                 ],
               ),
             ),

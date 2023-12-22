@@ -1,38 +1,33 @@
 part of 'home_cubit.dart';
 
 class HomeState extends Equatable {
-  final XLanguage language;
   final List<XMessage> messages;
   final XHandle<bool> handle;
 
   const HomeState({
     required this.handle,
     this.messages = const [],
-    required this.language,
   });
 
   factory HomeState.ds() {
     return HomeState(
       handle: XHandle(),
       messages: UserPrefs.I.getMessages(),
-      language: UserPrefs.I.getLanguage(),
     );
   }
 
   HomeState copyWith({
     XHandle<bool>? handle,
-    XLanguage? language,
     List<XMessage>? messages,
   }) {
     return HomeState(
-      language: language ?? this.language,
       messages: messages ?? this.messages,
       handle: handle ?? this.handle,
     );
   }
 
   @override
-  List<Object?> get props => [messages, language, handle];
+  List<Object?> get props => [messages, handle];
 
   List<MContent> get getRecentMessage {
     List<XMessage> list = List.from(messages);

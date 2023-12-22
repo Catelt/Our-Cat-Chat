@@ -55,74 +55,67 @@ class _CustomEditTextState extends State<CustomEditText> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Material(
-          borderRadius: BorderRadius.circular(Sizes.p12),
-          elevation: 8,
-          child: Column(
+    return Padding(
+      padding: const EdgeInsets.all(Sizes.p12),
+      child: Column(
+        children: [
+          _buildImage(),
+          Row(
             children: [
-              _buildImage(),
-              Row(
-                children: [
-                  Expanded(
-                      child: TextField(
-                    textInputAction: TextInputAction.done,
-                    keyboardType: TextInputType.multiline,
-                    textCapitalization: TextCapitalization.sentences,
-                    maxLines: null,
-                    controller: controller,
-                    decoration: InputDecoration(
-                      hintText: S.of(context).hint_edit_text,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(Sizes.p12),
-                        borderSide: BorderSide.none,
-                      ),
-                      fillColor: Colors.white,
-                      filled: true,
-                      contentPadding: const EdgeInsets.all(Sizes.p12),
-                    ),
-                    onSubmitted: (value) {
-                      _handleSendText();
-                    },
-                  )),
-                  IconButton(
-                    onPressed: () async {
-                      final path = await XImagePicker().selectImage();
-                      if (path != null) {
-                        _addImage(path);
-                      }
-                    },
-                    icon: const Icon(
-                      Icons.image_rounded,
-                      size: Sizes.p28,
-                    ),
+              Expanded(
+                  child: TextField(
+                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.multiline,
+                textCapitalization: TextCapitalization.sentences,
+                maxLines: null,
+                controller: controller,
+                decoration: InputDecoration(
+                  hintText: S.of(context).hint_edit_text,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(Sizes.p12),
+                    borderSide: BorderSide.none,
                   ),
-                  if (isLoading)
-                    Container(
-                      padding: const EdgeInsets.all(Sizes.p4),
-                      margin: const EdgeInsets.only(right: Sizes.p4),
-                      width: Sizes.p28,
-                      height: Sizes.p28,
-                      child: const CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  else
-                    IconButton(
-                      onPressed: isValid ? _handleSendText : null,
-                      icon: Icon(
-                        Icons.send_rounded,
-                        size: Sizes.p28,
-                        color: isValid
-                            ? Theme.of(context).colorScheme.primary
-                            : null,
-                      ),
-                    ),
-                ],
+                  filled: true,
+                  contentPadding: const EdgeInsets.all(Sizes.p12),
+                ),
+                onSubmitted: (value) {
+                  _handleSendText();
+                },
+              )),
+              IconButton(
+                onPressed: () async {
+                  final path = await XImagePicker().selectImage();
+                  if (path != null) {
+                    _addImage(path);
+                  }
+                },
+                icon: const Icon(
+                  Icons.image_rounded,
+                  size: Sizes.p28,
+                ),
               ),
+              if (isLoading)
+                Container(
+                  padding: const EdgeInsets.all(Sizes.p4),
+                  margin: const EdgeInsets.only(right: Sizes.p4),
+                  width: Sizes.p28,
+                  height: Sizes.p28,
+                  child: const CircularProgressIndicator(strokeWidth: 2),
+                )
+              else
+                IconButton(
+                  onPressed: isValid ? _handleSendText : null,
+                  icon: Icon(
+                    Icons.send_rounded,
+                    size: Sizes.p28,
+                    color:
+                        isValid ? Theme.of(context).colorScheme.primary : null,
+                  ),
+                ),
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

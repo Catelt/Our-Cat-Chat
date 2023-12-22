@@ -19,6 +19,14 @@
 
   "hint_edit_text": "Start typing",
 
+  "language": "Language",
+  "button_delete_messages": "Deleted all messages",
+
+  "theme": "Theme",
+  "system": "System (Default)",
+  "light": "Light",
+  "dark": "Dark",
+
   "title_dialog_delete": "Are you sure?",
   "content_dialog_delete": "You will deleted all message",
 

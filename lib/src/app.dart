@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logger/logger.dart';
-import 'package:my_chat_gpt/src/feature/logic/home_cubit.dart';
-import 'package:my_chat_gpt/src/feature/view/home_page.dart';
+import 'package:my_chat_gpt/src/constants/color.dart';
+import 'package:my_chat_gpt/src/feature/home/home_page.dart';
+import 'package:my_chat_gpt/src/feature/home/logic/home_cubit.dart';
+import 'package:my_chat_gpt/src/feature/settings/logic/settings_cubit.dart';
 import 'package:my_chat_gpt/src/localization/localization_utils.dart';
 import 'package:my_chat_gpt/src/network/domain_manager.dart';
 
@@ -16,13 +18,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepositoryProvider(
       create: (context) => DomainManager(),
-      child: BlocProvider(
-        create: (context) => HomeCubit(context.read<DomainManager>()),
-        child: BlocBuilder<HomeCubit, HomeState>(
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => HomeCubit(context.read<DomainManager>()),
+          ),
+          BlocProvider(
+            create: (context) => SettingsCubit(),
+          ),
+        ],
+        child: BlocBuilder<SettingsCubit, SettingsState>(
           buildWhen: (previous, current) =>
+              previous.theme != current.theme ||
               previous.language != current.language,
           builder: (context, state) {
             return MaterialApp(
+              navigatorKey: S.navigatorKey,
               debugShowCheckedModeBanner: false,
               localizationsDelegates: [
                 S.delegate,
@@ -35,7 +46,12 @@ class MyApp extends StatelessWidget {
               onGenerateTitle: (BuildContext context) =>
                   S.of(context).common_appTitle,
               theme: ThemeData(
-                  useMaterial3: true, colorSchemeSeed: const Color(0xFF926BF7)),
+                  useMaterial3: true, colorSchemeSeed: XColor.primary),
+              darkTheme: ThemeData(
+                  useMaterial3: true,
+                  colorSchemeSeed: XColor.primary,
+                  brightness: Brightness.dark),
+              themeMode: state.theme,
               home: const HomePage(),
             );
           },

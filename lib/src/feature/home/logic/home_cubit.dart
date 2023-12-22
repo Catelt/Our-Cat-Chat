@@ -5,7 +5,6 @@ import 'package:my_chat_gpt/src/network/domain_manager.dart';
 import 'package:my_chat_gpt/src/network/model/common/handle.dart';
 import 'package:my_chat_gpt/src/network/model/content.dart';
 import 'package:my_chat_gpt/src/network/model/inline_data.dart';
-import 'package:my_chat_gpt/src/network/model/language.dart';
 import 'package:my_chat_gpt/src/network/model/message.dart';
 import 'package:my_chat_gpt/src/network/model/part.dart';
 import 'package:my_chat_gpt/src/network/model/role.dart';
@@ -17,11 +16,6 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this.domain) : super(HomeState.ds());
   final DomainManager domain;
-
-  void onChangeLanguage(XLanguage language) {
-    emit(state.copyWith(language: language));
-    UserPrefs.I.setLanguage(language);
-  }
 
   void addMessage(XMessage value) {
     List<XMessage> newList = List.from(state.messages);

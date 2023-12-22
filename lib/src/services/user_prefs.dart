@@ -1,10 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:my_chat_gpt/src/constants/app_language.dart';
+import 'package:my_chat_gpt/src/utils/theme.dart';
 import 'package:my_chat_gpt/src/network/model/language.dart';
 import 'package:my_chat_gpt/src/network/model/message.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin _keys {
   static const String language = 'language';
+  static const String theme = 'theme';
   static const String messages = 'messages';
 }
 
@@ -27,6 +30,16 @@ class UserPrefs {
 
   void setLanguage(XLanguage value) {
     _prefs.setString(_keys.language, value.code.toString().toLowerCase());
+  }
+
+  // Theme
+  ThemeMode getTheme() {
+    final value = _prefs.getString(_keys.theme);
+    return ThemeUtils.fromName(value);
+  }
+
+  void setTheme(ThemeMode value) {
+    _prefs.setString(_keys.theme, value.name);
   }
 
   // message

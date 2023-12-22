@@ -19,6 +19,14 @@
 
   "hint_edit_text": "Nhập...",
 
+  "language": "Ngôn ngữ",
+  "button_delete_messages": "Xóa hết tin nhắn",
+
+  "theme": "Chế dộ",
+  "system": "Hệ thống (Mặc định)",
+  "light": "Sáng",
+  "dark": "Tối",
+
   "title_dialog_delete": "Bạn có chắc chắn?",
   "content_dialog_delete": "Bạn sẽ xóa hết tin nhắn",
 
